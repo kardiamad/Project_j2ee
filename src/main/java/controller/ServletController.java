@@ -65,13 +65,8 @@ public class ServletController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		System.out.println("in doGet of servket controller >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		// TODO Auto-generated method stub
 		String action = request.getServletPath();
-		System.out.println("action :::::::::::::::::::::::::" + action);
-		
-
 		try {
 			switch (action) {
 			case "/login":
@@ -152,7 +147,6 @@ public class ServletController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("inside post >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
@@ -309,8 +303,6 @@ public class ServletController extends HttpServlet {
 	
 	private void login(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("login called >>>>>>>>>>>>>>>>>>>>>>.>>>>>");
-		//UserDAO userDao = null;
 		boolean result = true;
 		String login_error = "";
 		String username = request.getParameter("uname");
@@ -488,12 +480,12 @@ public class ServletController extends HttpServlet {
 			result = false;
 			login_error += "Please enter the Category";
 		}
+		int id = Integer.parseInt(request.getParameter("id"));
+		Product product = new Product(id, product_name, product_brand, product_category);
 		try {
 			if(result) {
 				int role = userDAO.roleCheck(authorized_username);
 				if(role == 1) {
-					int id = Integer.parseInt(request.getParameter("id"));
-					Product product = new Product(id, product_name, product_brand, product_category);
 					boolean found = productDAO.updateProduct(product);
 					if(found) {
 						response.sendRedirect("listProduct");
@@ -507,8 +499,10 @@ public class ServletController extends HttpServlet {
 					dispatcher.forward(request, response);
 				}
 			}else {
-				request.setAttribute("errors", login_error);
-				RequestDispatcher dispatcher = request.getRequestDispatcher("AdminForm.jsp");
+				request.setAttribute("error", login_error);
+				request.setAttribute("auth_user", authorized_username);
+				request.setAttribute("product", product);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("EditProduct.jsp");
 				dispatcher.forward(request, response);
 			}
 		} catch (Exception e) {
@@ -558,11 +552,11 @@ public class ServletController extends HttpServlet {
 			result = false;
 			login_error += "Please enter the Category";
 		}
+		Product newproduct = new Product(product_name, product_brand, product_category);
 		if(result) {
 			int role = userDAO.roleCheck(authorized_username);
 			if(role == 1) {
 				try {
-					Product newproduct = new Product(product_name, product_brand, product_category);
 					productDAO.addProduct(newproduct);
 					response.sendRedirect("listProduct");
 				} catch (Exception e) {
@@ -574,8 +568,10 @@ public class ServletController extends HttpServlet {
 				dispatcher.forward(request, response);
 			}
 		}else {
-			request.setAttribute("errors", login_error);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("AdminForm.jsp");
+			request.setAttribute("error", login_error);
+			request.setAttribute("product", newproduct);
+			request.setAttribute("auth_user", authorized_username);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("AddNewProduct.jsp");
 			dispatcher.forward(request, response);
 		}
 	}
@@ -696,7 +692,7 @@ public class ServletController extends HttpServlet {
 						claimDAO.addClaim(newClaim);
 						response.sendRedirect("listDevice");
 					}else {
-						request.setAttribute("errors", "You cannot add a Claim to this product");
+						request.setAttribute("errors", "You can add three claims in 4 years from purchase date.");
 						RequestDispatcher dispatcher = request.getRequestDispatcher("CustomerForm.jsp");
 						dispatcher.forward(request, response);
 					}
@@ -710,8 +706,13 @@ public class ServletController extends HttpServlet {
 				dispatcher.forward(request, response);
 			}
 		}else {
-			request.setAttribute("errors", login_error);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("AdminForm.jsp");
+			request.setAttribute("error", login_error);
+			request.setAttribute("auth_user", authorized_username);
+			ProductRegistration productSelected = new ProductRegistration();
+			productSelected.setProduct_name(product_name);
+			productSelected.setAuthorizedUser(authorized_username);
+			request.setAttribute("product", productSelected);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("AddClaim.jsp");
 			dispatcher.forward(request, response);
 		}
 	}
