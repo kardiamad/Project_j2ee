@@ -12,6 +12,7 @@
 <% session.setAttribute("userName", request.getParameter("id")); %>
 <% String error = (String) request.getAttribute("error");%>
 <% String auth_user = (String) request.getAttribute("auth_user");%>
+
 <body>
 	<c:if test="${not empty listProduct[0].authorized_username or not empty userName or not empty auth_user}">
 		<header>
@@ -37,7 +38,6 @@
 			 	<h3 style="color:red">${error}</h3>
 			  </c:if>
 	        <h1>Add New Device Registration</h1>
-			
 			<form action="insertDevice" method="post">
 		        <table border="1" cellpadding="5">
 		            <tr>
@@ -74,6 +74,7 @@
 	        <a href="CustomerForm.jsp?id=<c:out value='${listProduct[0].authorized_username}' />">Go Back</a>
 	    </div>	
 		</c:if>	
+
 		<c:if test="${empty listProduct[0].authorized_username and empty userName and empty auth_user}">
 			<h2>Please, Login or Register first</h2>
 			<p><a href="login.jsp">Login</a></p>

@@ -453,7 +453,7 @@ public class ServletController extends HttpServlet {
 		int id = Integer.parseInt(request.getParameter("id"));
 		try {
 			Product existingProduct = productDAO.getProduct(id, authorized_username);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("EditProduct.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("EditProduct.jsp");
 			request.setAttribute("product", existingProduct);
 			dispatcher.forward(request, response);
 		} catch (Exception e) {
