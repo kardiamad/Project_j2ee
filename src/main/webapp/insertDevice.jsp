@@ -7,6 +7,11 @@
 <head>
 <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+	  src="https://code.jquery.com/jquery-3.6.0.min.js"
+	  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+	  crossorigin="anonymous"></script>
+	<script type="text/javascript" src="scripts/ajaxCalls.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <% session.setAttribute("userName", request.getParameter("id")); %>
@@ -61,7 +66,10 @@
 		            <tr>
 		                <th>Purchase Date: </th>
 		                <td>
-		                	<input type="date" name="purchase_date" value="${productRegistered.purchase_date}"/>
+		                	<div class="mb-3">
+		                		<input type="date" name="purchase_date" id="purchase_date" placeholder="yyyy-MM-dd" value="${productRegistered.purchase_date}"/>
+		                	</div>
+		                	
 		                </td>
 		            </tr>
 		            <tr>
@@ -80,5 +88,24 @@
 			<p><a href="login.jsp">Login</a></p>
 			<p><a href="register.jsp">Register</a></p>
 		</c:if>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				var today = new Date();
+				var dd = today.getDate();
+				var mm = today.getMonth() + 1; //January is 0!
+				var yyyy = today.getFullYear();
+		
+				if (dd < 10) {
+				   dd = '0' + dd;
+				}
+		
+				if (mm < 10) {
+				   mm = '0' + mm;
+				} 
+				    
+				var maxDate = yyyy + '-' + mm + '-' + dd;
+				$('#purchase_date').attr('max', maxDate); //disable future dates
+			})
+		</script>
 </body>
 </html>
