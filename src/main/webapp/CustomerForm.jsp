@@ -25,6 +25,7 @@
 		                    <c:if test="${empty userName}">
 		                    	<div >${user.authorizedUser}<input type="submit" value="Log out" /></div>
 		                    </c:if>
+		                    <div >${user.authorizedUser}<input type="submit" value="Log out" /></div>
 		                </form>
 		            </div>
 		        </div>
