@@ -22,7 +22,7 @@
 		                    <c:if test="${empty user.authorizedUser}">
 		                    	<div >${userName}<input type="submit" value="Log out" /></div>
 		                    </c:if>
-		                    <c:if test="${empty userName}">
+		                    <c:if test="${not empty user.authorizedUser}">
 		                    	<div >${user.authorizedUser}<input type="submit" value="Log out" /></div>
 		                    </c:if>
 		                </form>
