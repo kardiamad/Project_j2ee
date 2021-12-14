@@ -29,10 +29,9 @@
 		                    <c:if test="${empty listProduct[0].authorized_username}">
 		                    	<div >${userName}<input type="submit" value="Log out" /></div>
 		                    </c:if>
-		                    <c:if test="${empty userName}">
+		                    <c:if test="${not empty listProduct[0].authorized_username}">
 		                    	<div >${listProduct[0].authorized_username}<input type="submit" value="Log out" /></div>
 		                    </c:if>
-		                    <div >${listProduct[0].authorized_username}<input type="submit" value="Log out" /></div>
 		                </form>
 		            </div>
 		        </div>
