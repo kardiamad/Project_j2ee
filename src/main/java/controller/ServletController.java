@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sun.source.tree.NewClassTree;
+
 import dao.ClaimDAO;
 import dao.ProductDAO;
 import dao.ProductRegistrationDAO;
@@ -636,7 +638,7 @@ public class ServletController extends HttpServlet {
 		int id = Integer.parseInt(request.getParameter("id"));
 		
 		ProductRegistration productRegistration = productRegistrationDAO.getProductById(id, authorized_username);
-		boolean checking = claimDAO.checkPlan(productRegistration.getAuthorizedUser(), productRegistration.getProduct_name(), productRegistration.getPurchase_date());
+		boolean checking = claimDAO.checkPlan(productRegistration.getAuthorizedUser(), productRegistration.getProduct_name(), productRegistration.getPurchase_date(), productRegistration.getProduct_reg_id());
 		if(checking) {
 			request.setAttribute("product", productRegistration);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("AddClaim.jsp");
@@ -668,6 +670,7 @@ public class ServletController extends HttpServlet {
 	
 	private void addClaim(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		int product_id = Integer.parseInt(request.getParameter("pid"));
 		boolean result = true;
 		String login_error = "";
 		String product_name = request.getParameter("pname");
@@ -686,8 +689,9 @@ public class ServletController extends HttpServlet {
 					long millis=System.currentTimeMillis();  
 					Date date=new Date(millis);  
 					Claim newClaim = new Claim(authorized_username, product_name, claim_desc, date.toString(), "N");
+					newClaim.setProduct_id(product_id);
 					String purchase_date = productRegistrationDAO.getPurchaseDate(authorized_username, product_name);
-					boolean check = claimDAO.checkPlan(authorized_username, product_name, purchase_date);
+					boolean check = claimDAO.checkPlan(authorized_username, product_name, purchase_date, product_id);
 					if(check) {
 						claimDAO.addClaim(newClaim);
 						response.sendRedirect("listDevice");

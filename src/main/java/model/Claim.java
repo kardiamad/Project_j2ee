@@ -3,6 +3,7 @@ package model;
 public class Claim {
 	private int claim_id;
 	private String username;
+	private int product_id;
 	private String product_name;
 	private String claim_desc;
 	private String claim_date;
@@ -15,6 +16,28 @@ public class Claim {
 	}
 
 	public void setRole(int role) {
+		this.role = role;
+	}
+
+	public int getProduct_id() {
+		return product_id;
+	}
+
+	public void setProduct_id(int product_id) {
+		this.product_id = product_id;
+	}
+
+	public Claim(int claim_id, String username, int product_id, String product_name, String claim_desc,
+			String claim_date, String claim_approval, String authorizedUser, int role) {
+		super();
+		this.claim_id = claim_id;
+		this.username = username;
+		this.product_id = product_id;
+		this.product_name = product_name;
+		this.claim_desc = claim_desc;
+		this.claim_date = claim_date;
+		this.claim_approval = claim_approval;
+		this.authorizedUser = authorizedUser;
 		this.role = role;
 	}
 

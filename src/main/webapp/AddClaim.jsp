@@ -35,7 +35,8 @@
 		        <table border="1" cellpadding="5">
 		            <tr>
 		                <th>Product Name: </th>
-		                <td><input type="text" name="pname" size="55"  value="${product.product_name}" /></td>
+		                <td><input type="hidden" name="pid" size="55"  value="${product.product_reg_id}" />
+		                <input type="text" name="pname" size="55"  value="${product.product_name}" /></td>
 	            	</tr>
 		            <tr>
 		                <th>Claim Description: </th>

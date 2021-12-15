@@ -179,7 +179,7 @@ public class ClaimDAO {
 		return listProductRegistered;
 	}
 	
-	public boolean checkPlan(String username, String product_name, String purchase_date)  throws SQLException{
+	public boolean checkPlan(String username, String product_name, String purchase_date, int id)  throws SQLException{
 		boolean result = true;
 		Date due_date = null;
 		try {
@@ -193,11 +193,10 @@ public class ClaimDAO {
 			e.printStackTrace();
 		}
 		String[] dates = new String[3];
-		String sql = "SELECT claim_date FROM claim where username = ? and product_name = ?";
+		String sql = "SELECT claim_date FROM claim where product_id = ?";
 		connect();
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-		statement.setString(1, username);
-		statement.setString(2, product_name);
+		statement.setInt(1, id);
 		ResultSet resultSet = statement.executeQuery();
 		resultSet.last();
 		int size = resultSet.getRow();
@@ -231,14 +230,15 @@ public class ClaimDAO {
 	}
 	
 	public boolean addClaim(Claim claim) throws SQLException {
-		String sql = "INSERT INTO claim (username, product_name, claim_desc, claim_date, claim_approval) VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO claim (username, product_id, product_name, claim_desc, claim_date, claim_approval) VALUES (?, ?, ?, ?, ?, ?)";
 		connect();
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 		statement.setString(1, claim.getUsername());
-		statement.setString(2, claim.getProduct_name());
-		statement.setString(3, claim.getClaim_desc());
-		statement.setString(4, claim.getClaim_date());
-		statement.setString(5, claim.getClaim_approval());
+		statement.setInt(2, claim.getProduct_id());
+		statement.setString(3, claim.getProduct_name());
+		statement.setString(4, claim.getClaim_desc());
+		statement.setString(5, claim.getClaim_date());
+		statement.setString(6, claim.getClaim_approval());
 		
 		boolean rowInserted = statement.executeUpdate() > 0;
 		statement.close();
